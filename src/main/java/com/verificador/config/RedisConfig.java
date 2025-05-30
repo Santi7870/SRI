@@ -13,11 +13,10 @@ public class RedisConfig {
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
-        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(
-                "redis-16380.c99.us-east-1-4.ec2.redns.redis-cloud.com", 16380);
-        config.setPassword("OBikD1PexjupVv2bhGe6ZJvvaBmDU7xG");
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("localhost", 6379);
         return new LettuceConnectionFactory(config);
     }
+
 
     @Bean
     public RedisTemplate<?, ?> redisTemplate() {
