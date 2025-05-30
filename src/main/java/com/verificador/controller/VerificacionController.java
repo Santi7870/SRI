@@ -6,8 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/verificacion")
 @CrossOrigin(origins = "*")
@@ -25,6 +23,13 @@ public class VerificacionController {
         }
         return ResponseEntity.ok(datos);
     }
+    @GetMapping("/existe-contribuyente")
+    public boolean verificarContribuyente(@RequestParam String ruc) {
+        System.out.println("➡️ RUC recibido en endpoint: [" + ruc + "]");
+        return verificacionService.esContribuyente(ruc);
+    }
+
+
 
     @GetMapping("/datos-vehiculo")
     public ResponseEntity<?> obtenerDatosVehiculo(@RequestParam String placa) {
@@ -35,8 +40,13 @@ public class VerificacionController {
         return ResponseEntity.ok(datos);
     }
 
-
-
+    @GetMapping("/licencia")
+    public ResponseEntity<?> obtenerDatosLicencia(@RequestParam String cedula, @RequestParam String placa) {
+        String datos = verificacionService.obtenerInformacionLicencia(cedula, placa);
+        if (datos.contains("error")) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("No se pudo obtener datos de la licencia");
+        }
+        return ResponseEntity.ok(datos);
+    }
 
 }
-

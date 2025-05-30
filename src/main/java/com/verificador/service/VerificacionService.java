@@ -14,16 +14,20 @@ public class VerificacionService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     // Verifica si el RUC existe como contribuyente
-    @Cacheable("contribuyentes")
+// Elimina temporalmente el @Cacheable
+// @Cacheable("contribuyentes")
     public boolean esContribuyente(String ruc) {
         try {
             String url = "https://srienlinea.sri.gob.ec/sri-catastro-sujeto-servicio-internet/rest/ConsolidadoContribuyente/existePorNumeroRuc?numeroRuc=" + ruc;
-            return Boolean.TRUE.equals(restTemplate.getForObject(url, Boolean.class));
+            Boolean result = restTemplate.getForObject(url, Boolean.class);
+            System.out.println("✔️ SRI responde: " + result);
+            return Boolean.TRUE.equals(result);
         } catch (Exception e) {
-            System.out.println("Error consultando existencia del RUC: " + e.getMessage());
+            System.out.println("❌ Error consultando SRI: " + e.getMessage());
             return false;
         }
     }
+
 
     // Obtiene los datos completos de un contribuyente
     public Object obtenerContribuyente(String ruc) {
@@ -62,6 +66,31 @@ public class VerificacionService {
             return "Error: " + e.getMessage();
         }
     }
+
+    @Cacheable("licencias")
+    public String obtenerInformacionLicencia(String cedula, String placa) {
+        // Simulación de datos por baja disponibilidad de la ANT
+        try {
+            System.out.println("Consultando licencia de: " + cedula + " con placa: " + placa);
+
+            // Este sería el HTML o texto simulado de una respuesta
+            String respuestaSimulada = """
+            {
+              "cedula": "%s",
+              "placa": "%s",
+              "puntosLicencia": 28,
+              "fechaUltimaActualizacion": "2024-12-15"
+            }
+        """.formatted(cedula, placa);
+
+            return respuestaSimulada;
+
+        } catch (Exception e) {
+            System.out.println("Error consultando licencia: " + e.getMessage());
+            return "{\"error\": \"No se pudo consultar la licencia\"}";
+        }
+    }
+
 
 
 
