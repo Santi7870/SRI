@@ -1,5 +1,6 @@
 package com.verificador.service;
 
+import com.verificador.selenium.ANTPuntosLicenciaScraper;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,6 @@ public class VerificacionService {
 
     @Cacheable("contribuyentes")
     public boolean esContribuyente(String ruc) {
-        System.out.println("❗Consultando API real para existencia de RUC: " + ruc);
         try {
             String url = "https://srienlinea.sri.gob.ec/sri-catastro-sujeto-servicio-internet/rest/ConsolidadoContribuyente/existePorNumeroRuc?numeroRuc=" + ruc;
             Boolean result = restTemplate.getForObject(url, Boolean.class);
@@ -24,7 +24,6 @@ public class VerificacionService {
 
     @Cacheable("vehiculos")
     public Object obtenerInformacionVehiculo(String placa) {
-        System.out.println("❗Consultando API real para vehículo: " + placa);
         try {
             String url = "https://srienlinea.sri.gob.ec/sri-matriculacion-vehicular-recaudacion-servicio-internet/rest/BaseVehiculo/obtenerPorNumeroPlacaOPorNumeroCampvOPorNumeroCpn?numeroPlacaCampvCpn=" + placa;
 
@@ -41,20 +40,21 @@ public class VerificacionService {
 
     @Cacheable(value = "licencias", key = "#cedula + '-' + #placa")
     public String obtenerInformacionLicencia(String cedula, String placa) {
-        System.out.println("Consultando licencia de: " + cedula + " con placa: " + placa);
-
-        String respuestaSimulada = """
+        return """
         {
           "cedula": "%s",
           "placa": "%s",
           "puntosLicencia": 28,
           "fechaUltimaActualizacion": "2024-12-15"
         }
-    """.formatted(cedula, placa);
-
-        return respuestaSimulada;
+        """.formatted(cedula, placa);
     }
 
+    @Cacheable(value = "puntosLicencia", key = "#cedula")
+    public String obtenerPuntosLicenciaDesdeWeb(String cedula) {
+        System.out.println("➡️ Consultando puntos desde la web de ANT para: " + cedula);
+        return ANTPuntosLicenciaScraper.obtenerPuntosDesdeUrl(cedula);
+    }
 
 
     public Object obtenerContribuyente(String ruc) {
@@ -62,9 +62,8 @@ public class VerificacionService {
             String url = "https://srienlinea.sri.gob.ec/sri-catastro-sujeto-servicio-internet/rest/ConsolidadoContribuyente/obtenerPorNumerosRuc?&ruc=" + ruc;
             return restTemplate.getForObject(url, Object.class);
         } catch (Exception e) {
-            System.out.println("Error obteniendo datos del contribuyente: " + e.getMessage());
             return null;
         }
     }
-
 }
+

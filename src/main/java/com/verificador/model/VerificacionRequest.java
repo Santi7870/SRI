@@ -29,4 +29,3 @@ public class VerificacionRequest {
         this.placa = placa;
     }
 }
-

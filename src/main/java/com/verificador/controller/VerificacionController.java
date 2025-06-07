@@ -2,8 +2,7 @@ package com.verificador.controller;
 
 import com.verificador.service.VerificacionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,13 +22,11 @@ public class VerificacionController {
         }
         return ResponseEntity.ok(datos);
     }
+
     @GetMapping("/existe-contribuyente")
     public boolean verificarContribuyente(@RequestParam String ruc) {
-        System.out.println("➡️ RUC recibido en endpoint: [" + ruc + "]");
         return verificacionService.esContribuyente(ruc);
     }
-
-
 
     @GetMapping("/datos-vehiculo")
     public ResponseEntity<?> obtenerDatosVehiculo(@RequestParam String placa) {
@@ -49,4 +46,9 @@ public class VerificacionController {
         return ResponseEntity.ok(datos);
     }
 
+    @GetMapping("/licencia/puntos")
+    public ResponseEntity<?> obtenerPuntosLicenciaDesdeCedula(@RequestParam String cedula) {
+        String datos = verificacionService.obtenerPuntosLicenciaDesdeWeb(cedula);
+        return ResponseEntity.ok(datos);
+    }
 }
