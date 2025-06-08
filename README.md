@@ -57,17 +57,12 @@ Caché
 🐳 Redis en Docker
 Ejecuta Redis en tu entorno con:
 
-bash
-Copiar
-Editar
-docker run -d --name redis-server -p 6379:6379 redis
+- docker run -d --name redis-server -p 6379:6379 redis
+
 Puedes ver las claves guardadas con:
 
-bash
-Copiar
-Editar
-docker exec -it redis-server redis-cli
-127.0.0.1:6379> keys *
+- docker exec -it redis-server redis-cli
+- 127.0.0.1:6379> keys *
 
 ---
 
@@ -93,13 +88,13 @@ Entrada:
 
 Salida esperada:
 
-Datos del contribuyente desde el SRI
+- Datos del contribuyente desde el SRI
 
-Información vehicular de la ANT
+- Información vehicular de la ANT
 
-Puntos de licencia actuales desde scraping web
+- Puntos de licencia actuales desde scraping web
 
-Resultado mostrado y cacheado en Redis
+- Resultado mostrado y cacheado en Redis
 
 ---
 
