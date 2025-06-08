@@ -35,12 +35,13 @@ LINK BACKEND: https://github.com/Santi7870/SRI
 
 El sistema guarda los resultados por clave, ejemplo:
 
-```bash
 keys *
 1) "contribuyentes::0913743464001"
 2) "vehiculos::PBT2966"
 3) "licencias::1707765937-PBT2966"
 4) "puntosLicencia::1707765937"
+
+---
 
 📷 Capturas del Sistema
 Pantalla Principal
@@ -51,6 +52,7 @@ Caché
 
 ![image](https://github.com/user-attachments/assets/d951525b-c082-4e4c-97b1-4ddbbf4a0e7c)
 
+---
 
 🐳 Redis en Docker
 Ejecuta Redis en tu entorno con:
@@ -66,6 +68,8 @@ Copiar
 Editar
 docker exec -it redis-server redis-cli
 127.0.0.1:6379> keys *
+
+---
 
 🚀 Instrucciones para Ejecutar
 -- Backend (Spring Boot)
@@ -96,6 +100,8 @@ Información vehicular de la ANT
 Puntos de licencia actuales desde scraping web
 
 Resultado mostrado y cacheado en Redis
+
+---
 
 👤 Autores
 Santiago, Dayana, Vanessa — Proyecto académico UDLA 2025
